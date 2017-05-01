@@ -46,7 +46,7 @@ app.get('/addToDo', function (req, res) {
       console.log('allToDoItems ->', allToDoItems);
       res.send(allToDoItems);
     }); // end resultSet on end
-    }
+  } // end else
   }); // pool connect
 }); // end app.get
 app.post('/addToDo', function(req, res){
@@ -62,7 +62,7 @@ app.post('/addToDo', function(req, res){
       res.send(objectToSend);
     connection.query("INSERT into todo (task) values ($1)", [req.body.todo]);
     done();
-  }
+  } // end else
 
 }); // end pool connect
 }); // end app.post

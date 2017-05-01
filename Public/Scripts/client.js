@@ -18,10 +18,8 @@ function addAToDo() {
   data: objectToSend,
   success: function(data){
     console.log('adding client ->' , data);
-    // $('#viewList').append('<p>' + data[i].task + " " + data[i].status + '</p>' + '<button id="updateButton">Update</button><button id="deleteButton">Delete</button>');
   }
 });
-// toDoAdd();
 }
  // end addAToDo
 
