@@ -25,5 +25,44 @@ app.listen(port, function(){
 // base url
 app.get('/', function(req, res){
   console.log('base url hit');
-  res.sendFile(path.join(__dirname, 'Public/Views/index.html'));
+  res.sendFile(path.resolve('public/views/index.html'));
 });
+// get route
+app.get('/addToDo', function (req, res) {
+  console.log('add to do route hit');
+  var allToDoItems = [];
+  pool.connect(function(err, connection, done){
+    if (err){
+      console.log(err);
+      res.sendStaus(400);
+    } else {
+      console.log('connected to db');
+      var resultSet = connection.query("SELECT * FROM todo");
+      resultSet.on('row', function (row) {
+        allToDoItems.push(row);
+      }); // end resultSet on row
+      resultSet.on('end', function () {
+      done();
+      console.log('allToDoItems ->', allToDoItems);
+      res.send(allToDoItems);
+    }); // end resultSet on end
+    }
+  }); // pool connect
+}); // end app.get
+app.post('/addToDo', function(req, res){
+  console.log('addNewToDo route');
+  var objectToSend = {
+    response: ('from addNewToDo' , req.body)};
+    pool.connect(function(err, connection, done){
+  if (err) {
+    console.log(err);
+    res.send(400);
+  } else {
+    console.log('connected');
+      res.send(objectToSend);
+    connection.query("INSERT into todo (task) values ($1)", [req.body.todo]);
+    done();
+  }
+
+}); // end pool connect
+}); // end app.post
